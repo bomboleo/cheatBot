@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="win32-x86-64-2">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/win32-x86-64-2.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
