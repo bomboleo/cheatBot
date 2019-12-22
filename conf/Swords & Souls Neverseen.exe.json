@@ -1,0 +1,46 @@
+{
+  "applicationExecutable" : "Swords & Souls Neverseen.exe",
+  "actionAndImageAnalyzes" : [ {
+    "inputAction" : {
+      "type" : "com.bombo.cheatbot.input.InputActionKeyboard",
+      "source" : "KEYBOARD",
+      "keyCode" : 37,
+      "delayBetweenActivation" : 200
+    },
+    "trigger" : {
+      "x" : 648,
+      "y" : 860,
+      "width" : 50,
+      "height" : 50,
+      "limitRatio" : 5.0
+    }
+  }, {
+    "inputAction" : {
+      "type" : "com.bombo.cheatbot.input.InputActionKeyboard",
+      "source" : "KEYBOARD",
+      "keyCode" : 39,
+      "delayBetweenActivation" : 200
+    },
+    "trigger" : {
+      "x" : 983,
+      "y" : 860,
+      "width" : 50,
+      "height" : 50,
+      "limitRatio" : 5.0
+    }
+  }, {
+    "inputAction" : {
+      "type" : "com.bombo.cheatbot.input.InputActionKeyboard",
+      "source" : "KEYBOARD",
+      "keyCode" : 38,
+      "delayBetweenActivation" : 200
+    },
+    "trigger" : {
+      "x" : 815,
+      "y" : 690,
+      "width" : 50,
+      "height" : 50,
+      "limitRatio" : 5.0
+    }
+  } ]
+}
