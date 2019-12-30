@@ -59,7 +59,7 @@ public class ScreenCapture {
 
     public interface GDI32Extra extends GDI32 {
 
-        GDI32Extra INSTANCE = Native.loadLibrary("gdi32", GDI32Extra.class, W32APIOptions.DEFAULT_OPTIONS);
+        GDI32Extra INSTANCE = Native.load("gdi32", GDI32Extra.class, W32APIOptions.DEFAULT_OPTIONS);
 
         boolean BitBlt(WinDef.HDC hObject, int nXDest, int nYDest, int nWidth, int nHeight, WinDef.HDC hObjectSource, int nXSrc, int nYSrc, WinDef.DWORD dwRop);
     }
@@ -67,7 +67,7 @@ public class ScreenCapture {
 
     public interface User32Extra extends User32 {
 
-        User32Extra INSTANCE = Native.loadLibrary("user32", User32Extra.class, W32APIOptions.DEFAULT_OPTIONS);
+        User32Extra INSTANCE = Native.load("user32", User32Extra.class, W32APIOptions.DEFAULT_OPTIONS);
 
         HDC GetWindowDC(HWND hWnd);
 

@@ -39,9 +39,11 @@ public class WindowChooser extends JPanel {
 
     private ListSelectionListener getListSelectionListener(List<WindowComponent> data) {
         return e -> {
-            int selectedIndex = ((ListSelectionModel) e.getSource()).getSelectedIndices()[0];
-            final WindowComponent wc = data.get(selectedIndex);
-            CheatApplication.getInstance().setSelectedApplication(wc.getApplicationWindow());
+            if(e.getValueIsAdjusting()) {
+                int selectedIndex = ((ListSelectionModel) e.getSource()).getSelectedIndices()[0];
+                final WindowComponent wc = data.get(selectedIndex);
+                CheatApplication.getInstance().setSelectedApplication(wc.getApplicationWindow());
+            }
         };
     }
 }

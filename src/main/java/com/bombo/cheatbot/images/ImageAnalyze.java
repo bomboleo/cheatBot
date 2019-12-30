@@ -3,26 +3,26 @@ package com.bombo.cheatbot.images;
 import com.bombo.cheatbot.CheatApplication;
 import com.bombo.cheatbot.ScreenCapture;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class ImageAnalyze {
 
+    @Getter@Setter
     private int x, y, width, height;
     private double limitRatio;
 
-    @JsonIgnore
+    @JsonIgnore@Getter
     private BufferedImage reference;
-    @JsonIgnore
+    @JsonIgnore@Getter
     private BufferedImage currentImage;
     @JsonIgnore
     private long lastImageChanged;
-    @JsonIgnore
+    @JsonIgnore@Getter
     private boolean triggered;
-
-    public ImageAnalyze() {
-    }
 
     public ImageAnalyze(double limitRatio, Rectangle rect) {
         this.limitRatio = limitRatio;
@@ -41,58 +41,6 @@ public class ImageAnalyze {
             if (diff > limitRatio) triggered = true;
         }
         return triggered;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public double getLimitRatio() {
-        return limitRatio;
-    }
-
-    public void setLimitRatio(double limitRatio) {
-        this.limitRatio = limitRatio;
-    }
-
-    public boolean isTriggered() {
-        return triggered;
-    }
-
-    public BufferedImage getReference() {
-        return reference;
-    }
-
-    public BufferedImage getCurrentImage() {
-        return currentImage;
     }
 
     public void saveReference() {

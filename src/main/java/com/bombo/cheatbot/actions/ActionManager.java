@@ -3,15 +3,14 @@ package com.bombo.cheatbot.actions;
 import com.bombo.cheatbot.ScreenCapture;
 import com.bombo.cheatbot.images.ImageAnalyze;
 import com.bombo.cheatbot.windows.ApplicationWindow;
+import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+@Slf4j
 public class ActionManager {
 
     private Robot robot;
@@ -71,21 +70,22 @@ public class ActionManager {
                 if(toAnalyze != null && regionToCapture != null) {
                     actionList.forEach(v -> {
                         ImageAnalyze t = v.getTrigger();
-                        if(t.computeTriggered(ScreenCapture.capture(toAnalyze.getPointer(), new Rectangle(t.getX(), t.getY(), t.getWidth(), t.getHeight())))) {
+                        if (t.computeTriggered(ScreenCapture.capture(toAnalyze.getPointer(), new Rectangle(t.getX(), t.getY(), t.getWidth(), t.getHeight())))) {
                             v.getInputAction().execute(robot);
                         }
                     });
+
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    if (i % 100 == 0) {
+                        log.info(System.currentTimeMillis() - last + "ms");
+                        last = System.currentTimeMillis();
+                    }
+                    i++;
                 }
-                try {
-                    Thread.sleep(1);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                if(i%100 == 0) {
-                    System.out.println(System.currentTimeMillis() - last);
-                    last = System.currentTimeMillis();
-                }
-                i++;
             }
         }
     }

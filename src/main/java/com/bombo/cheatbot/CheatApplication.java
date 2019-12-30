@@ -11,13 +11,17 @@ import com.bombo.cheatbot.images.ImageAnalyze;
 import com.bombo.cheatbot.input.InputAction;
 import com.bombo.cheatbot.windows.ApplicationWindow;
 import com.bombo.cheatbot.windows.WindowTracker;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.util.regex.Pattern;
 
+@Slf4j
 public class CheatApplication implements PropertyChangeListener {
 
     private static CheatApplication instance;
@@ -25,11 +29,13 @@ public class CheatApplication implements PropertyChangeListener {
     private WindowChooser applicationChooser;
     private WindowTracker windowTracker;
 
+    @Getter
     private ApplicationWindow selectedApplication;
 
     private OverlayFrame overlayFrame;
 
     private Robot robot;
+    @Getter
     private ActionManager actionManager;
 
     private ConfigurationManager configurationManager;
@@ -61,7 +67,7 @@ public class CheatApplication implements PropertyChangeListener {
         imageAnalyzePanel = new ImageAnalyzePanel();
         contentPane.add(imageAnalyzePanel, BorderLayout.NORTH);
 
-        GlobalShortcut gs = new GlobalShortcut();
+        new GlobalShortcut();
 
         JFrame frame = new JFrame("Choose an application");
         frame.setContentPane(contentPane);
@@ -84,10 +90,6 @@ public class CheatApplication implements PropertyChangeListener {
         return instance;
     }
 
-    public WindowChooser getApplicationChooser() {
-        return applicationChooser;
-    }
-
     @Override
     public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
         this.selectedApplication = (ApplicationWindow) propertyChangeEvent.getNewValue();
@@ -99,14 +101,6 @@ public class CheatApplication implements PropertyChangeListener {
         });
     }
 
-    public ApplicationWindow getSelectedApplication() {
-        return selectedApplication;
-    }
-
-    public ActionManager getActionManager() {
-        return actionManager;
-    }
-
     public void setSelectedApplication(ApplicationWindow selectedApplication) {
         this.selectedApplication = selectedApplication;
         loadConfiguration(selectedApplication.getApplicationFilePath());
@@ -114,20 +108,28 @@ public class CheatApplication implements PropertyChangeListener {
         this.actionManager.setToAnalyze(selectedApplication);
     }
 
-    private void loadConfiguration(String applicationFilePath) {
+    private boolean loadConfiguration(String applicationFilePath) {
         actionManager.clearActions();
-        String exeName = new File(applicationFilePath).getName();
+        String exeName = cleanFileName(new File(applicationFilePath).getName());
         ApplicationConfiguration ap = configurationManager.loadConfiguration(exeName);
-        ap.getActionAndImageAnalyzes().forEach(a -> {
-            registerAction(a.getInputAction(), a.getTrigger());
-        });
+        if(ap == null) {
+            //TODO No configuration available
+            log.warn("No configuration found for application " + exeName + ", unable to load a bot.");
+            return false;
+        } else {
+            ap.getActionAndImageAnalyzes().forEach(a -> registerAction(a.getInputAction(), a.getTrigger()));
+            return true;
+        }
     }
 
     public void registerAction(InputAction action, ImageAnalyze trigger) {
         this.actionManager.registerAction(new Action(action, trigger));
     }
 
-    public Robot getRobot() {
-        return robot;
+    public static String cleanFileName(String name) {
+        int i = name.lastIndexOf(".");
+        if(i != -1) name = name.substring(0, i);
+
+        return Pattern.compile("[^A-Za-z0-9]").matcher(name).replaceAll("");
     }
 }

@@ -1,12 +1,15 @@
 package com.bombo.cheatbot.conf;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 public class ConfigurationManager {
 
     private static final String CONFIGURATION_FOLDER = "./conf/";
@@ -32,8 +35,10 @@ public class ConfigurationManager {
             ApplicationConfiguration ap = objectMapper.readValue(new File(CONFIGURATION_FOLDER + applicationName + ".json"), ApplicationConfiguration.class);
             configurationMap.put(ap.getApplicationExecutable(), ap);
             return ap;
+        } catch(FileNotFoundException e) {
+            return null;
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Unable to load configuration for application " + applicationName, e);
         }
         return null;
     }
